@@ -1,0 +1,214 @@
+MySQL Shell 8.0.45
+
+Copyright (c) 2016, 2026, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 9
+Server version: 8.0.45 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > use taller 1;
+Incorrect number of arguments for use command, usage:
+\use <schema_name>
+ MySQL  localhost:3306 ssl  SQL > \use taller 1
+Incorrect number of arguments for use command, usage:
+\use <schema_name>
+ MySQL  localhost:3306 ssl  SQL > use taller1;
+Default schema set to `taller1`.
+Fetching global names, object names from `taller1` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  taller1  SQL > create table order(
+                                        -> order_id int not null auto_increment key,
+                                        -> order_date date,
+                                        -> cust_id int)
+                                        -> ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order(
+order_id int not null auto_increment key,
+order_date date,
+cust_id int)' at line 1
+ MySQL  localhost:3306 ssl  taller1  SQL > create table order(order_id int not null key, order_date date, cust_id int) ;
+
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order(order_id int not null key, order_date date, cust_id int)' at line 1
+ MySQL  localhost:3306 ssl  taller1  SQL > create table order(order_id int key, order_date date, cust_id int) ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order(order_id int key, order_date date, cust_id int)' at line 1
+ MySQL  localhost:3306 ssl  taller1  SQL > create table order(order_id int, order_date date, cust_id int);
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order(order_id int, order_date date, cust_id int)' at line 1
+ MySQL  localhost:3306 ssl  taller1  SQL > create table ordenes( order_id int not null auto_increment key, order_date date, cust_id int) ;
+Query OK, 0 rows affected (0.0724 sec)
+ MySQL  localhost:3306 ssl  taller1  SQL > create table clientes(cust_id int not null auto_increment key, cust_city varchar(50), cust_state varchar(10))
+                                        -> ;
+Query OK, 0 rows affected (0.0229 sec)
+ MySQL  localhost:3306 ssl  taller1  SQL > show tables;
++-------------------+
+| Tables_in_taller1 |
++-------------------+
+| clientes          |
+| curso1            |
+| ordenes           |
+| persona           |
+| prof              |
+| student           |
++-------------------+
+6 rows in set (0.0102 sec)
+ MySQL  localhost:3306 ssl  taller1  SQL > show table ordenes
+                                        -> ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ordenes' at line 1
+ MySQL  localhost:3306 ssl  taller1  SQL > insert into ordenes(order_id, order_date, cust_id) values(
+                                        -> 1006, "10-24-2004", 2),
+                                        -> (1007, "10-25-2004", 6),
+                                        -> (1008, "11-1-2004", 2);
+ERROR: 1292 (22007): Incorrect date value: '10-24-2004' for column 'order_date' at row 1
+ MySQL  localhost:3306 ssl  taller1  SQL > insert into ordenes(order_id, order_date, cust_id) values( 1006, "24-10-2004", 2), (1007, "25-10-2004", 6), (1008, "1-11-2004", 2);
+ERROR: 1292 (22007): Incorrect date value: '24-10-2004' for column 'order_date' at row 1
+ MySQL  localhost:3306 ssl  taller1  SQL > insert into ordenes(order_id, order_date, cust_id) values( 1006, "2004-10-24", 2), (1007, "2004-10-25", 6), (1008, "2004-1-11", 2);
+Query OK, 3 rows affected (0.0135 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  taller1  SQL > drop clientes;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'clientes' at line 1
+ MySQL  localhost:3306 ssl  taller1  SQL > drop table clientes;
+Query OK, 0 rows affected (0.0265 sec)
+ MySQL  localhost:3306 ssl  taller1  SQL > create table clientes(cust_id int not null auto_increment key, cust_name varchar(50), cust_city varchar(30), cust_state varchar(10)) ;
+Query OK, 0 rows affected (0.0239 sec)
+ MySQL  localhost:3306 ssl  taller1  SQL > insert into clientes(cust_id, cust_name, cust_city, cust_state) values
+                                        -> (2, "Value Furniture", "Plano", "TX"),
+                                        -> (6, "Furniture Gallery", "Boulder", "CO");
+Query OK, 2 rows affected (0.0111 sec)
+
+Records: 2  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  taller1  SQL > select * from ordenes;
++----------+------------+---------+
+| order_id | order_date | cust_id |
++----------+------------+---------+
+|     1006 | 2004-10-24 |       2 |
+|     1007 | 2004-10-25 |       6 |
+|     1008 | 2004-01-11 |       2 |
++----------+------------+---------+
+3 rows in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  taller1  SQL > select * from clientes;
++---------+-------------------+-----------+------------+
+| cust_id | cust_name         | cust_city | cust_state |
++---------+-------------------+-----------+------------+
+|       2 | Value Furniture   | Plano     | TX         |
+|       6 | Furniture Gallery | Boulder   | CO         |
++---------+-------------------+-----------+------------+
+2 rows in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  taller1  SQL > create table employee(
+                                        -> id int not null auto_increment key,
+                                        -> name varchar(40),
+                                        -> job_code int,
+                                        -> state_code int);
+Query OK, 0 rows affected (0.0215 sec)
+ MySQL  localhost:3306 ssl  taller1  SQL >
+
+
+
+MySQL Shell 8.0.45
+
+Copyright (c) 2016, 2026, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 10
+Server version: 8.0.45 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > use taller1;
+Default schema set to `taller1`.
+Fetching global names, object names from `taller1` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  taller1  SQL > show tables;
++-------------------+
+| Tables_in_taller1 |
++-------------------+
+| clientes          |
+| curso1            |
+| employee          |
+| ordenes           |
+| persona           |
+| prof              |
+| student           |
++-------------------+
+7 rows in set (0.0089 sec)
+ MySQL  localhost:3306 ssl  taller1  SQL > select * from employee;
+Empty set (0.0213 sec)
+ MySQL  localhost:3306 ssl  taller1  SQL > create table job(
+                                        -> job_code int not null auto_increment key,
+                                        -> job varchar(30));
+Query OK, 0 rows affected (0.0331 sec)
+ MySQL  localhost:3306 ssl  taller1  SQL > create table state(
+                                        -> state_code int not null auto_increment key,
+                                        -> state varchar(30));
+Query OK, 0 rows affected (0.0230 sec)
+ MySQL  localhost:3306 ssl  taller1  SQL > insert into state() values(
+                                        -> 26, "Michigan"),
+                                        -> (56, "Wyoming");
+Query OK, 2 rows affected (0.0130 sec)
+
+Records: 2  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  taller1  SQL > insert into job() values
+                                        -> (1, "Chef"),
+                                        -> (2, "Waiter"),
+                                        -> (3, "Bartender");
+Query OK, 3 rows affected (0.0116 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  taller1  SQL > insert into employee() values
+                                        -> (1, "Alice zzz"zzzzzzzz
+                                        -> ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'zzzzzzzz' at line 2
+ MySQL  localhost:3306 ssl  taller1  SQL > drop table employee;
+Query OK, 0 rows affected (0.0173 sec)
+ MySQL  localhost:3306 ssl  taller1  SQL > create table employee
+                                        -> (employee_id int not null,
+                                        -> name varchar(30),
+                                        -> job_code int,
+                                        -> state_code int);
+Query OK, 0 rows affected (0.0347 sec)
+ MySQL  localhost:3306 ssl  taller1  SQL > insert into employee() values
+                                        -> (1, "Alice", 1, 26),
+                                        -> (1, "Alice", 2, 26),
+                                        -> (2, "Bob", 2, 56),
+                                        -> (2, "Bob", 3, 56),
+                                        -> (3, "Alice", 1, 56);
+Query OK, 5 rows affected (0.0107 sec)
+
+Records: 5  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  taller1  SQL > select * from employee;
++-------------+-------+----------+------------+
+| employee_id | name  | job_code | state_code |
++-------------+-------+----------+------------+
+|           1 | Alice |        1 |         26 |
+|           1 | Alice |        2 |         26 |
+|           2 | Bob   |        2 |         56 |
+|           2 | Bob   |        3 |         56 |
+|           3 | Alice |        1 |         56 |
++-------------+-------+----------+------------+
+5 rows in set (0.0010 sec)
+ MySQL  localhost:3306 ssl  taller1  SQL > select * from job;
++----------+-----------+
+| job_code | job       |
++----------+-----------+
+|        1 | Chef      |
+|        2 | Waiter    |
+|        3 | Bartender |
++----------+-----------+
+3 rows in set (0.0010 sec)
+ MySQL  localhost:3306 ssl  taller1  SQL > select * from state;
++------------+----------+
+| state_code | state    |
++------------+----------+
+|         26 | Michigan |
+|         56 | Wyoming  |
++------------+----------+
+2 rows in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  taller1  SQL >
